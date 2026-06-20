@@ -109,9 +109,33 @@ ctest --test-dir out/build/windows-msvc-debug --output-on-failure
 - `configured_files/` contains generated build metadata headers.
 - `cmake/` contains reusable CMake helper modules.
 
-## Renaming the template
+<!-- template-usage-start -->
+## Create a project from the template
 
-For a new project, run:
+From this repository, create a clean project in a sibling directory with one
+command:
+
+```bat
+NewProject.bat "My New Project"
+```
+
+This creates `..\my_new_project`, replaces the template identifiers, and leaves
+the original template unchanged. Git metadata, IDE state, and build output are
+not copied. You can choose the destination and initialize a fresh Git repository:
+
+```bat
+NewProject.bat "My New Project" C:\Code\my-new-project -InitializeGit
+```
+
+To use a different C++ namespace/include folder from the CMake project name:
+
+```bat
+NewProject.bat "My New Project" -Namespace myapp
+```
+
+## Rename an existing copy
+
+If you have already copied the template manually, rename it in place with:
 
 ```powershell
 .\RenameProject.ps1 MyNewProject
@@ -130,3 +154,4 @@ Preview the changes without writing files:
 ```powershell
 .\RenameProject.ps1 MyNewProject -DryRun
 ```
+<!-- template-usage-end -->

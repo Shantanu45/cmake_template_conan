@@ -101,6 +101,7 @@ GenerateVisualStudioProject.bat Debug
 
 The solution is written to `out/build/vs-Debug/cmake_template_project.sln`.
 
+<!-- template-usage-start -->
 ### Using this repository as a template
 
 Rename the template before starting feature work:
@@ -114,6 +115,7 @@ Then verify:
 ```shell
 build.bat windows-msvc-debug test
 ```
+<!-- template-usage-end -->
 
 Create or refresh your default Conan profile:
 

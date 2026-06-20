@@ -71,6 +71,7 @@ $textFiles = @(
     "src/main.cpp",
     "test/CMakeLists.txt",
     "test/test_main.cpp",
+    "fuzz_test/CMakeLists.txt",
     "web/shell_template.html.in",
     "cmake/Cache.cmake",
     "cmake/CompilerWarnings.cmake",
@@ -101,6 +102,29 @@ foreach ($relative in $textFiles) {
     $content = $content.Replace($OldNamespace, $SafeNamespace)
     $content = $content.Replace($OldHeaderGuardPrefix.ToUpperInvariant(), $NewHeaderGuardPrefix)
     Set-TextFileContent $path $content
+}
+
+# Project identifiers and C++ namespaces are usually the same, but they are
+# separate concepts. Adjust only C++-facing files when a custom namespace was
+# requested; CMake target and option names keep using the project identifier.
+if ($SafeNamespace -ne $ProjectName) {
+    $namespaceFiles = @(
+        "configured_files/config.hpp.in",
+        "src/main.cpp",
+        "test/test_main.cpp"
+    )
+
+    foreach ($relative in $namespaceFiles) {
+        $path = Join-Path $Root $relative
+        if (-not (Test-Path -LiteralPath $path)) {
+            continue
+        }
+
+        $content = Get-Content -LiteralPath $path -Raw
+        $content = $content.Replace($ProjectName, $SafeNamespace)
+        $content = $content.Replace($ProjectName.ToUpperInvariant(), $NewHeaderGuardPrefix)
+        Set-TextFileContent $path $content
+    }
 }
 
 $oldIncludeDir = Join-Path $Root "include\$OldNamespace"
