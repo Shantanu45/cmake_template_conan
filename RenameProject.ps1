@@ -44,8 +44,8 @@ if ([string]::IsNullOrWhiteSpace($SafeNamespace)) {
 
 $Root = Split-Path -Parent $PSCommandPath
 $OldProjectName = "cmake_template_project"
-$OldNamespace = "myproject"
-$OldHeaderGuardPrefix = "myproject"
+$OldNamespace = "cmake_template_project"
+$OldHeaderGuardPrefix = "cmake_template_project"
 $NewHeaderGuardPrefix = $SafeNamespace.ToUpperInvariant()
 
 $textFiles = @(
