@@ -27,7 +27,8 @@ if ([string]::IsNullOrWhiteSpace($ProjectName)) {
     throw "Project name '$Name' does not contain any usable identifier characters."
 }
 
-$TemplateRoot = Split-Path -Parent $PSCommandPath
+$ScriptsRoot = Split-Path -Parent $PSCommandPath
+$TemplateRoot = Split-Path -Parent $ScriptsRoot
 if ([string]::IsNullOrWhiteSpace($Destination)) {
     $Destination = Join-Path (Split-Path -Parent $TemplateRoot) $ProjectName
 }
@@ -46,7 +47,17 @@ Write-Host "Creating '$ProjectName' in '$Destination'..."
 New-Item -ItemType Directory -Path $Destination | Out-Null
 
 try {
-    $excludedRootEntries = @('.git', '.vs', 'out')
+    $excludedRootEntries = @(
+        '.agents',
+        '.codex',
+        '.git',
+        '.vs',
+        'configured_files',
+        'fuzz_test',
+        'out',
+        'src',
+        'test'
+    )
     Get-ChildItem -LiteralPath $TemplateRoot -Force |
         Where-Object { $_.Name -notin $excludedRootEntries } |
         Copy-Item -Destination $Destination -Recurse -Force
@@ -55,18 +66,18 @@ try {
     if (-not [string]::IsNullOrWhiteSpace($Namespace)) {
         $renameArguments += $Namespace
     }
-    & (Join-Path $Destination 'RenameProject.ps1') @renameArguments
+    & (Join-Path $Destination 'scripts\RenameProject.ps1') @renameArguments
 
-    foreach ($documentationFile in @('README.md', 'README_building.md')) {
+    foreach ($documentationFile in @('README.md', 'docs\building.md')) {
         $documentationPath = Join-Path $Destination $documentationFile
         $documentation = Get-Content -LiteralPath $documentationPath -Raw
         $documentation = $documentation -replace '(?s)\r?\n<!-- template-usage-start -->.*?<!-- template-usage-end -->\r?\n?', "`r`n"
         Set-Content -LiteralPath $documentationPath -Value $documentation.TrimEnd() -NoNewline
     }
 
-    Remove-Item -LiteralPath (Join-Path $Destination 'RenameProject.ps1') -Force
-    Remove-Item -LiteralPath (Join-Path $Destination 'NewProject.ps1') -Force
-    Remove-Item -LiteralPath (Join-Path $Destination 'NewProject.bat') -Force
+    Remove-Item -LiteralPath (Join-Path $Destination 'scripts\RenameProject.ps1') -Force
+    Remove-Item -LiteralPath (Join-Path $Destination 'scripts\NewProject.ps1') -Force
+    Remove-Item -LiteralPath (Join-Path $Destination 'scripts\NewProject.bat') -Force
 
     if ($InitializeGit) {
         & git -C $Destination init
@@ -82,4 +93,4 @@ catch {
 
 Write-Host "Project created successfully."
 Write-Host "Next: cd '$Destination'"
-Write-Host "      .\build.bat windows-msvc-debug test"
+Write-Host "      .\scripts\build.bat windows-msvc-debug test"

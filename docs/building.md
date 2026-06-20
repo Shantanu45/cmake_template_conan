@@ -87,16 +87,16 @@ CMake uses the environment variables CC and CXX to decide which compiler to use.
 
 The project uses Conan 2 with `CMakeDeps` and `CMakeToolchain`.
 
-On Windows, `build.bat` wraps the normal Conan and CMake steps:
+On Windows, `scripts\build.bat` wraps the normal Conan and CMake steps:
 
 ```shell
-build.bat windows-msvc-debug test
+scripts\build.bat windows-msvc-debug test
 ```
 
 To generate a Visual Studio solution:
 
 ```shell
-GenerateVisualStudioProject.bat Debug
+scripts\generate-visual-studio-project.bat Debug
 ```
 
 The solution is written to `out/build/vs-Debug/cmake_template_project.sln`.
@@ -107,13 +107,13 @@ The solution is written to `out/build/vs-Debug/cmake_template_project.sln`.
 Rename the template before starting feature work:
 
 ```shell
-powershell -ExecutionPolicy Bypass -File RenameProject.ps1 MyNewProject
+powershell -ExecutionPolicy Bypass -File scripts\RenameProject.ps1 MyNewProject
 ```
 
 Then verify:
 
 ```shell
-build.bat windows-msvc-debug test
+scripts\build.bat windows-msvc-debug test
 ```
 <!-- template-usage-end -->
 

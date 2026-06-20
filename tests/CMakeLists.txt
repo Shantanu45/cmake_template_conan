@@ -33,8 +33,8 @@ endif()
 
 target_include_directories(tests PRIVATE
     "${CMAKE_SOURCE_DIR}/include"
-    "${CMAKE_BINARY_DIR}/configured_files/include"
-    "${CMAKE_SOURCE_DIR}/src"
+    "${CMAKE_BINARY_DIR}/generated/include"
+    "${CMAKE_SOURCE_DIR}/app"
 )
 
 catch_discover_tests(tests)

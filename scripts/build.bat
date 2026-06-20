@@ -1,5 +1,6 @@
 @echo off
 setlocal
+cd /d "%~dp0.."
 
 set "PRESET=%~1"
 if "%PRESET%"=="" set "PRESET=windows-msvc-debug"
@@ -57,7 +58,7 @@ exit /b 0
 
 :help
 echo Usage:
-echo   build.bat [preset] [action]
+echo   scripts\build.bat [preset] [action]
 echo.
 echo Presets:
 echo   windows-msvc-debug      default
@@ -72,7 +73,7 @@ echo   test                    configure, build, and test ^(default^)
 echo   clean                   remove the preset build directory
 echo.
 echo Examples:
-echo   build.bat
-echo   build.bat windows-msvc-release build
-echo   build.bat windows-clang-debug test
+echo   scripts\build.bat
+echo   scripts\build.bat windows-msvc-release build
+echo   scripts\build.bat windows-clang-debug test
 exit /b 0

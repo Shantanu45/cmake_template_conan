@@ -42,7 +42,8 @@ if ([string]::IsNullOrWhiteSpace($SafeNamespace)) {
     throw "Namespace '$Namespace' does not contain any usable identifier characters."
 }
 
-$Root = Split-Path -Parent $PSCommandPath
+$ScriptsRoot = Split-Path -Parent $PSCommandPath
+$Root = Split-Path -Parent $ScriptsRoot
 $OldProjectName = "cmake_template_project"
 $OldNamespace = "cmake_template_project"
 $OldHeaderGuardPrefix = "cmake_template_project"
@@ -59,19 +60,19 @@ $textFiles = @(
     "Dependencies.cmake",
     "ProjectOptions.cmake",
     "README.md",
-    "README_building.md",
-    "README_dependencies.md",
-    "README_docker.md",
-    "build.bat",
-    "GenerateVisualStudioProject.bat",
-    "configured_files/config.hpp.in",
+    "docs/building.md",
+    "docs/dependencies.md",
+    "docs/docker.md",
+    "scripts/build.bat",
+    "scripts/generate-visual-studio-project.bat",
+    "cmake/configured/config.hpp.in",
     "docs/Doxyfile",
     "include/$OldNamespace/sample_library.hpp",
-    "src/CMakeLists.txt",
-    "src/main.cpp",
-    "test/CMakeLists.txt",
-    "test/test_main.cpp",
-    "fuzz_test/CMakeLists.txt",
+    "app/CMakeLists.txt",
+    "app/main.cpp",
+    "tests/CMakeLists.txt",
+    "tests/test_main.cpp",
+    "fuzz/CMakeLists.txt",
     "web/shell_template.html.in",
     "cmake/Cache.cmake",
     "cmake/CompilerWarnings.cmake",
@@ -109,9 +110,9 @@ foreach ($relative in $textFiles) {
 # requested; CMake target and option names keep using the project identifier.
 if ($SafeNamespace -ne $ProjectName) {
     $namespaceFiles = @(
-        "configured_files/config.hpp.in",
-        "src/main.cpp",
-        "test/test_main.cpp"
+        "cmake/configured/config.hpp.in",
+        "app/main.cpp",
+        "tests/test_main.cpp"
     )
 
     foreach ($relative in $namespaceFiles) {
@@ -147,5 +148,5 @@ if ($DryRun) {
     Write-Host "Dry run complete; no files were changed."
 } else {
     Write-Host "Rename complete."
-    Write-Host "Next: run 'build.bat windows-msvc-debug test' to verify."
+    Write-Host "Next: run 'scripts\build.bat windows-msvc-debug test' to verify."
 }

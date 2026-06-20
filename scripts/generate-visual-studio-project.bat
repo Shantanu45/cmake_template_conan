@@ -1,5 +1,6 @@
 @echo off
 setlocal
+cd /d "%~dp0.."
 
 set "BUILD_TYPE=%~1"
 if "%BUILD_TYPE%"=="" set "BUILD_TYPE=Debug"
@@ -43,7 +44,7 @@ exit /b 0
 
 :help
 echo Usage:
-echo   GenerateVisualStudioProject.bat [build-type] [generator] [arch]
+echo   scripts\generate-visual-studio-project.bat [build-type] [generator] [arch]
 echo.
 echo Defaults:
 echo   build-type: Debug
@@ -51,7 +52,7 @@ echo   generator:  Visual Studio 17 2022
 echo   arch:       x64
 echo.
 echo Examples:
-echo   GenerateVisualStudioProject.bat
-echo   GenerateVisualStudioProject.bat Release
-echo   GenerateVisualStudioProject.bat Debug "Visual Studio 17 2022" x64
+echo   scripts\generate-visual-studio-project.bat
+echo   scripts\generate-visual-studio-project.bat Release
+echo   scripts\generate-visual-studio-project.bat Debug "Visual Studio 17 2022" x64
 exit /b 0

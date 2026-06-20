@@ -27,21 +27,21 @@ used as a starting point for a real executable project.
 On Windows, the simplest path is the wrapper script:
 
 ```bat
-build.bat
+scripts\build.bat
 ```
 
 That defaults to `windows-msvc-debug` and runs Conan install, CMake configure,
 build, and tests. You can also choose a preset and action:
 
 ```bat
-build.bat windows-msvc-release build
-build.bat windows-clang-debug test
+scripts\build.bat windows-msvc-release build
+scripts\build.bat windows-clang-debug test
 ```
 
 To generate a Visual Studio solution instead of a Ninja build tree:
 
 ```bat
-GenerateVisualStudioProject.bat
+scripts\generate-visual-studio-project.bat
 ```
 
 Then open:
@@ -102,12 +102,17 @@ ctest --test-dir out/build/windows-msvc-debug --output-on-failure
 
 ## Project layout
 
-- `src/` contains the executable target.
+- `app/` contains the executable entry point.
 - `include/` contains public example headers.
-- `test/` contains Catch2 tests.
-- `fuzz_test/` contains a libFuzzer target.
-- `configured_files/` contains generated build metadata headers.
-- `cmake/` contains reusable CMake helper modules.
+- `tests/` contains Catch2 tests.
+- `fuzz/` contains the libFuzzer target.
+- `cmake/configured/` defines generated build metadata headers.
+- `cmake/` contains reusable CMake modules and configuration.
+- `scripts/` contains build, generation, and template utilities.
+- `docs/` contains detailed building, dependency, Docker, and API documentation.
+
+More detail is available in the guides for [building](docs/building.md),
+[dependencies](docs/dependencies.md), and [Docker](docs/docker.md).
 
 <!-- template-usage-start -->
 ## Create a project from the template
@@ -116,7 +121,7 @@ From this repository, create a clean project in a sibling directory with one
 command:
 
 ```bat
-NewProject.bat "My New Project"
+scripts\NewProject.bat "My New Project"
 ```
 
 This creates `..\my_new_project`, replaces the template identifiers, and leaves
@@ -124,13 +129,13 @@ the original template unchanged. Git metadata, IDE state, and build output are
 not copied. You can choose the destination and initialize a fresh Git repository:
 
 ```bat
-NewProject.bat "My New Project" C:\Code\my-new-project -InitializeGit
+scripts\NewProject.bat "My New Project" C:\Code\my-new-project -InitializeGit
 ```
 
 To use a different C++ namespace/include folder from the CMake project name:
 
 ```bat
-NewProject.bat "My New Project" -Namespace myapp
+scripts\NewProject.bat "My New Project" -Namespace myapp
 ```
 
 ## Rename an existing copy
@@ -138,7 +143,7 @@ NewProject.bat "My New Project" -Namespace myapp
 If you have already copied the template manually, rename it in place with:
 
 ```powershell
-.\RenameProject.ps1 MyNewProject
+.\scripts\RenameProject.ps1 MyNewProject
 ```
 
 The script normalizes the name to a CMake/C++ friendly identifier. For example,
@@ -146,12 +151,12 @@ The script normalizes the name to a CMake/C++ friendly identifier. For example,
 and include folder:
 
 ```powershell
-.\RenameProject.ps1 MyNewProject myapp
+.\scripts\RenameProject.ps1 MyNewProject myapp
 ```
 
 Preview the changes without writing files:
 
 ```powershell
-.\RenameProject.ps1 MyNewProject -DryRun
+.\scripts\RenameProject.ps1 MyNewProject -DryRun
 ```
 <!-- template-usage-end -->

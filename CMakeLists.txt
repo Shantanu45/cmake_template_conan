@@ -59,10 +59,10 @@ add_library(cmake_template_project::cmake_template_project_warnings ALIAS cmake_
 #add_library(cmake_template_project::cmake_template_project_warnings INTERFACE IMPORTED)
 
 # configure files based on CMake configuration options
-add_subdirectory(configured_files)
+add_subdirectory(cmake/configured)
 
-# Adding the src:
-add_subdirectory(src)
+# Application executable
+add_subdirectory(app)
 
 # Create unified web deployment directory (for WASM builds)
 if(EMSCRIPTEN)
@@ -78,7 +78,7 @@ endif()
 include(CTest)
 
 if(BUILD_TESTING)
-  add_subdirectory(test)
+  add_subdirectory(tests)
 endif()
 
 
@@ -87,7 +87,7 @@ if(cmake_template_project_BUILD_FUZZ_TESTS)
   if (NOT cmake_template_project_ENABLE_SANITIZER_ADDRESS AND NOT cmake_template_project_ENABLE_SANITIZER_THREAD)
     message(WARNING "You need asan or tsan enabled for meaningful fuzz testing")
   endif()
-  add_subdirectory(fuzz_test)
+  add_subdirectory(fuzz)
 
 endif()
 

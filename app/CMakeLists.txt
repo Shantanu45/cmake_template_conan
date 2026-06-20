@@ -13,9 +13,9 @@ target_link_libraries(
 cmake_template_project_configure_linker(${PROJECT_NAME})
 
 target_include_directories(${PROJECT_NAME} PRIVATE
-  "${CMAKE_BINARY_DIR}/configured_files/include"
+  "${CMAKE_BINARY_DIR}/generated/include"
   "${CMAKE_SOURCE_DIR}/include"
-  "${CMAKE_SOURCE_DIR}/src")
+  "${CMAKE_SOURCE_DIR}/app")
 
 # Apply WASM-specific configuration
 if(EMSCRIPTEN)
